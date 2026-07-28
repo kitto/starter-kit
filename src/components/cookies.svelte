@@ -12,8 +12,7 @@
 		<div class="title">This site uses cookies to measure and improve your experience.</div>
 		{#if details}
 			<div class="details" transition:slide>
-				We use cookies to improve your experience.<br />"Essential" cookies are needed for the site to
-				function.
+				We use cookies to improve your experience.<br />"Essential" cookies are needed for the site to function.
 				<dl>
 					<dt>Essential</dt>
 					<dd>Online support</dd>

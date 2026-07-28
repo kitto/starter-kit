@@ -3,8 +3,9 @@
 ### An opinionated SvelteKit starter, with the following opinions:
 
 - TypeScript
-- Oxfmt
-- ESLint
+- rsvelte (Rust Svelte compiler via Vite plugin)
+- Oxfmt (via rsvelte-fmt)
+- Oxlint
 - MCP (incl. Claude, Cursor, Gemini)
 - Bun
 - Component & Library aliases
@@ -21,7 +22,7 @@
 - Security headers in hooks
 - Size CSS shorthand (kitto)
 - SSL support with mkcert
-- Svelte Check RS
+- rsvelte toolchain (svelte-check, fmt, lint)
 - UI state store
 - Variablised media query breakpoints (kitto)
 
@@ -38,8 +39,8 @@ To recreate the underlying SvelteKit setup use this configuration:
 
 ```sh
 # recreate this project
-bun x sv@0.16.4 create --template minimal --types ts --add eslint sveltekit-adapter="adapter:auto" mcp="ide:claude-code,cursor,gemini+setup:remote" --install bun .
-bun add -d oxfmt
+bun x sv@0.16.4 create --template minimal --types ts --add sveltekit-adapter="adapter:auto" mcp="ide:claude-code,cursor,gemini+setup:remote" --install bun .
+bun add -d oxfmt oxlint @rsvelte/svelte-check @rsvelte/fmt @rsvelte/lint
 ```
 
 ## Developing

@@ -1,4 +1,6 @@
-export function handleError({ error }) {
+import type { Handle, HandleServerError } from '@sveltejs/kit'
+
+export const handleError: HandleServerError = ({ error }) => {
 	const env = import.meta.env.environment
 	const err = error instanceof Error ? error : new Error('Unknown error')
 
@@ -10,7 +12,7 @@ export function handleError({ error }) {
 	}
 }
 
-export const handle = async ({ event, resolve }) => {
+export const handle: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event)
 
 	response.headers.set('Cache-Control', 'no-cache')

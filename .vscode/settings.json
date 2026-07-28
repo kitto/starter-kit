@@ -2,5 +2,10 @@
 	"files.eol": "\n",
 	"oxc.fmt.configPath": ".oxfmtrc.json",
 	"editor.defaultFormatter": "oxc.oxc-vscode",
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	// The svelte extension formats with its bundled prettier, which drifts from
+	// rsvelte-fmt. Format .svelte files via `bun run format` instead.
+	"[svelte]": {
+		"editor.formatOnSave": false
+	}
 }

@@ -8,27 +8,30 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "svelte-kit sync && svelte-check-rs --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check-rs --tsconfig ./tsconfig.json --watch",
-		"lint": "oxfmt --check . && eslint .",
-		"format": "oxfmt"
+		"check": "svelte-kit sync && rsvelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && rsvelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "rsvelte-fmt --check . && oxlint && rsvelte-lint src",
+		"format": "rsvelte-fmt"
+	},
+	"overrides": {
+		"@sveltejs/vite-plugin-svelte": "npm:@rsvelte/vite-plugin-svelte@^0.4.2"
 	},
 	"devDependencies": {
-		"@eslint/js": "10.0.1",
+		"@rsvelte/fmt": "0.7.2",
+		"@rsvelte/lint": "0.9.2",
+		"@rsvelte/svelte-check": "0.5.1",
 		"@sveltejs/adapter-auto": "7.0.1",
 		"@sveltejs/kit": "2.70.1",
-		"@sveltejs/vite-plugin-svelte": "7.2.0",
-		"@types/node": "26.1.1",
-		"eslint": "10.7.0",
-		"eslint-config-prettier": "10.1.8",
-		"eslint-plugin-svelte": "3.22.0",
-		"globals": "17.7.0",
+		"@sveltejs/vite-plugin-svelte": "0.5.0",
 		"kitto": "1.8.0",
 		"oxfmt": "0.60.0",
+		"oxlint": "1.75.0",
 		"svelte": "5.56.7",
-		"svelte-check-rs": "0.11.0",
-		"typescript": "5.9.3",
-		"typescript-eslint": "8.65.0",
+		"typescript": "7.0.2",
 		"vite": "8.1.5"
-	}
+	},
+	"trustedDependencies": [
+		"@rsvelte/fmt",
+		"@rsvelte/lint"
+	]
 }

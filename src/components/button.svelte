@@ -16,8 +16,8 @@
 	class={['button', cls]}
 	{href}
 	type={href ? undefined : (type ?? 'button')}
-	{...rest}>
-	{@render children?.()}
+	{...rest}
+	>{@render children?.()}
 </svelte:element>
 
 <style lang="css">

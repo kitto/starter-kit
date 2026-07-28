@@ -2,7 +2,7 @@
 
 - **Language**: TypeScript
 - **Package Manager**: bun
-- **Add-ons**: oxfmt, eslint, sveltekit-adapter, mcp
+- **Add-ons**: oxfmt, oxlint, rsvelte, sveltekit-adapter, mcp
 
 ---
 

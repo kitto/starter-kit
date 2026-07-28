@@ -217,11 +217,10 @@ export const prefs = storable&lt;{ cookies?: boolean }&gt;({}, 'prefs')`
 			<section class="hero">
 				<h1 class="hero-title">Starter Kit</h1>
 				<p class="hero-desc">
-					This repo is a working SvelteKit app not a tutorial site. It comes with Bun-friendly scripts,
-					TypeScript, linting and formatting, LightningCSS helpers for breakpoints and fluid type, basic
-					security headers, and a few small UI pieces (loader, optional cookie banner, analytics helper)
-					already imported or one comment away. Use it as a shortcut so you are not redoing the same wiring on
-					every new project. When you are ready,
+					This repo is a working SvelteKit app not a tutorial site. It comes with Bun-friendly scripts, TypeScript,
+					linting and formatting, LightningCSS helpers for breakpoints and fluid type, basic security headers, and a few
+					small UI pieces (loader, optional cookie banner, analytics helper) already imported or one comment away. Use
+					it as a shortcut so you are not redoing the same wiring on every new project. When you are ready,
 					<span>replace or delete this page</span>
 					and ship your own home screen.
 				</p>

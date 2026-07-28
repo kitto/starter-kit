@@ -21,9 +21,11 @@ export default defineConfig({
 				$components: './src/components',
 				$library: './src/library'
 			},
-			compilerOptions: {
+			vitePlugin: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
-				runes: ({ filename }) => (filename.split(/[/\\]/).includes('node_modules') ? undefined : true)
+				// Resolved per-file in JS — rsvelte's native compiler can't accept function options.
+				dynamicCompileOptions: ({ filename }) =>
+					filename.split(/[/\\]/).includes('node_modules') ? undefined : { runes: true }
 			}
 		})
 	]

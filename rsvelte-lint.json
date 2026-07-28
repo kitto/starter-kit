@@ -1,0 +1,12 @@
+{
+	"extends": ["recommended"],
+	"rules": {
+		"svelte/no-at-html-tags": "off",
+		"svelte/no-navigation-without-resolve": "off",
+		"svelte/block-lang": "off",
+		"svelte/consistent-selector-style": "off",
+		"svelte/no-inline-styles": "off",
+		"svelte/prefer-destructured-store-props": "off",
+		"svelte/require-optimized-style-attribute": "off"
+	}
+}
