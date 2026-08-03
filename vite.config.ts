@@ -2,8 +2,14 @@ import adapter from '@sveltejs/adapter-auto'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vite'
 import { kitto } from 'kitto/vite'
+import { Features } from 'lightningcss'
 
 export default defineConfig({
+	css: {
+		lightningcss: {
+			exclude: Features.LightDark
+		}
+	},
 	plugins: [
 		kitto({
 			breakpoints: {
@@ -17,7 +23,7 @@ export default defineConfig({
 		sveltekit({
 			adapter: adapter(),
 			alias: {
-				$assets: './src/assets',
+				$assets: './src/library/assets',
 				$components: './src/components',
 				$library: './src/library'
 			},
