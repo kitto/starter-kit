@@ -18,7 +18,8 @@ export default defineConfig({
 				laptop: 1280,
 				desktop: 1440
 			},
-			fluid: { vmax: 1600 }
+			fluid: { vmax: 1600 },
+			targets: 'baseline'
 		}),
 		sveltekit({
 			adapter: adapter(),
