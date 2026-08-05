@@ -21,7 +21,6 @@
 - Security headers in hooks
 - Size CSS shorthand (kitto)
 - SSL support with mkcert
-- Svelte Check RS
 - UI state store
 - Variablised media query breakpoints (kitto)
 
