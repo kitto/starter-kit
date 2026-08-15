@@ -9,7 +9,7 @@
 - Bun
 - Component & Library subpath imports
 - Viewport-fit cover
-- Ignore lock files
+- Commit lock files
 
 ### Along with these features:
 

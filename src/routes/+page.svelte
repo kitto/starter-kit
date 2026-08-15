@@ -44,10 +44,7 @@
 			.replace(/(--[\w-]+)/g, m => `<span class=hl-v>${m}</span>`)
 			.replace(/@(media|import)/g, m => `<span class=hl-k>${m}</span>`)
 			.replace(/\b(media|import|var|if|export|return|const|let|and)\b/g, m => `<span class=hl-k>${m}</span>`)
-			.replace(
-				/\b(fluid|breakpoints|size|composeVisitors|storable|set)\b/g,
-				m => `<span class=hl-f>${m}</span>`
-			)
+			.replace(/\b(fluid|breakpoints|size|kitto|storable|set)\b/g, m => `<span class=hl-f>${m}</span>`)
 			.replace(/(\.[a-zA-Z][\w-]*)(?=[\s{,])/g, m => `<span class=hl-sel>${m}</span>`)
 			.replace(/\b(?<![\w-]-)(\d+\.?\d*)(px|rem|em|%)?\b/g, m => `<span class=hl-n>${m}</span>`)
 	}
@@ -56,25 +53,25 @@
 		{
 			title: 'TypeScript, lint, and checks',
 			badge: 'package.json',
-			desc: 'TypeScript across the app, Oxfmt and ESLint (with the Svelte plugin), and `svelte-check-rs` via `bun run check`. Dependencies and scripts assume Bun.',
+			desc: 'TypeScript across the app, Oxfmt and ESLint (with the Svelte plugin), and `svelte-check` via `bun run check`. Dependencies and scripts assume Bun—`.npmrc` sets `engine-strict` and the lockfile is committed rather than ignored.',
 			example: `"scripts": {
-  "check": "svelte-kit sync && svelte-check-rs --tsconfig ./tsconfig.json",
+  "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
   "lint": "oxfmt --check . && eslint .",
   "format": "oxfmt"
 }`
 		},
 		{
-			title: 'LightningCSS + kitto visitors',
+			title: 'LightningCSS + kitto plugin',
 			badge: 'vite.config.ts',
-			desc: 'CSS is processed with LightningCSS. Breakpoints are defined once in Vite; `fluid()` gives responsive `clamp()` values; `size` is a width+height shorthand. All three come from `kitto/lightningcss`.',
+			desc: 'CSS is processed with LightningCSS. A single `kitto()` plugin wires it up: breakpoints are defined once, `fluid()` gives responsive `clamp()` values, `size` is a width+height shorthand, and `targets` sets the browser floor.',
 			examples: [
 				{
 					label: 'vite.config.ts',
-					code: `visitor: composeVisitors([
-  breakpoints({ mobile: 640, tablet: 1024, laptop: 1280, desktop: 1440 }),
-  fluid({ vmax: 1600 }),
-  size
-])`
+					code: `kitto({
+  breakpoints: { mobile: 640, tablet: 1024, laptop: 1280, desktop: 1440 },
+  fluid: { vmax: 1600 },
+  targets: 'baseline'
+})`
 				},
 				{
 					label: 'breakpoints()',
@@ -129,6 +126,12 @@
 }`
 		},
 		{
+			title: 'OS text scaling',
+			badge: 'app.html',
+			desc: 'The `text-scale` meta opts the page into OS and browser text size preferences, so the root font size follows the setting instead of ignoring it—around a third of mobile users have changed it. Only relative units respond, which is everything here since type comes from `rem`-based `fluid()` tokens. Support is still landing across browsers and it is ignored where unsupported.',
+			example: `&lt;meta name="text-scale" content="scale" /&gt;`
+		},
+		{
 			title: 'Security headers',
 			badge: 'hooks.server.ts',
 			desc: 'Every response gets cache control, CSP (`frame-ancestors`), permissions policy, referrer policy, and X-Content-Type-Options—reasonable defaults you can tighten per app.',
@@ -139,21 +142,23 @@ response.headers.set('X-Content-Type-Options', 'nosniff')`
 		{
 			title: 'handleError',
 			badge: 'hooks.server.ts',
-			desc: 'Errors are shaped centrally: production shows a short generic message (no stack traces); dev and preview surface the real `error.message`. The env comes from `import.meta.env.environment`—detected at build time from the deploying host (Vercel, Netlify, Cloudflare Pages & Workers) and baked in, so it works server- and client-side with no env var or `.env`.',
-			example: `// 'development' | 'preview' | 'production'
-message: import.meta.env.environment === 'production' ? 'Whoa there!' : err.message`
+			desc: 'SvelteKit 3 routes every error through `handleError`, tagged by `kind`: app errors from `error(...)`, framework 404s, validation issues, and unknown throws. The first three already carry a safe status and message, so they pass through untouched and only unknown errors are masked—production shows a short generic message (no stack traces); dev and preview surface the real `error.message`. The env comes from `import.meta.env.environment`—detected at build time from the deploying host (Vercel, Netlify, Cloudflare Pages & Workers) and baked in, so it works server- and client-side with no env var or `.env`.',
+			example: `if (kind === 'app') return { ...error, env: ENV }
+
+// 'development' | 'preview' | 'production'
+message: ENV === 'production' ? 'Whoa there!' : err.message`
 		},
 		{
 			title: 'HTTPS in dev (optional)',
 			badge: 'vite.config.ts',
-			desc: 'If `localhost.pem` and `localhost-key.pem` exist (e.g. from mkcert), the dev server serves HTTPS—useful for OAuth redirects, `Secure` cookies, or APIs that need a secure context. Otherwise Vite logs a warning and runs over HTTP.',
+			desc: 'The `kitto()` plugin looks for any `<name>.pem` + `<name>-key.pem` pair in the project root (e.g. from mkcert) and serves the dev server over HTTPS—useful for OAuth redirects, `Secure` cookies, or APIs that need a secure context. With no certs it logs a warning and runs over HTTP.',
 			example: `# After mkcert localhost (+ key files next to vite.config.ts)
 bun dev   # https://localhost:5173 when certs are present`
 		},
 		{
 			title: 'Version and build metadata',
 			badge: 'vite.config.ts · +layout.svelte',
-			desc: '`import.meta.env` exposes package name, version, a build timestamp, and the deploy environment (development / preview / production, auto-detected on Vercel & Cloudflare); the layout also mirrors version/build in `<meta>` tags for quick checks in the DOM. The timestamp below is rendered live with `format_date` from kitto—it shows when you opened this page.',
+			desc: 'The `kitto()` plugin bakes package name, version, a build timestamp, and the deploy environment (development / preview / production, auto-detected on Vercel & Cloudflare) into `import.meta.env`; the layout also mirrors version/build in `<meta>` tags for quick checks in the DOM. The timestamp below is rendered live with `format_date` from kitto—it shows when you opened this page.',
 			example: `import.meta.env.name        // starter-kit
 import.meta.env.version     // 2.0.0
 import.meta.env.build       // ${opened}

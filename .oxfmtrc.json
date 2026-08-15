@@ -10,5 +10,5 @@
 	"semi": false,
 	"bracketSameLine": true,
 	"sortPackageJson": false,
-	"ignorePatterns": [".claude"]
+	"ignorePatterns": [".claude", ".cursor", ".gemini"]
 }
