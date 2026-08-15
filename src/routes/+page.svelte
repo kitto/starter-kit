@@ -161,10 +161,10 @@ import.meta.env.environment // development`
 		},
 		{
 			title: 'Path aliases',
-			badge: 'vite.config.ts',
-			desc: '`$components` and `$library` map to `src/components` and `src/library` so imports stay short and consistent.',
-			example: `import Loader from '$components/loader.svelte'
-import { prefs } from '$library/stores'`
+			badge: 'package.json',
+			desc: 'Node subpath imports—`#components`, `#library` and `#assets` map to `src/components`, `src/library` and `src/library/assets` so imports stay short and consistent. Resolution is literal, so always write the extension; any file type works.',
+			example: `import Loader from '#components/loader.svelte'
+import { prefs } from '#library/stores.ts'`
 		},
 		{
 			title: 'Route loader',
@@ -187,7 +187,7 @@ import { prefs } from '$library/stores'`
 			title: 'Google Analytics helper',
 			badge: 'Analytics.svelte',
 			desc: 'Google Consent Mode v2—gtag loads for everyone but defaults to denied until the user accepts (then granted via `prefs.cookies`), so non-consenting visits get anonymous cookieless pings. Sends a page view on each `afterNavigate` for SPA route changes.',
-			example: `import Analytics from '$components/analytics.svelte'
+			example: `import Analytics from '#components/analytics.svelte'
 
 &lt;Analytics id="G-XXXXXXXXXX" /&gt;`
 		},

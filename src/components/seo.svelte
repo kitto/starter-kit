@@ -4,7 +4,7 @@
 
 <script lang="ts">
 	import { page } from '$app/state'
-	import { dev } from '$app/environment'
+	import { dev } from '$app/env'
 	import { onMount } from 'svelte'
 
 	interface Props {
@@ -37,7 +37,6 @@
 	const title = $derived(seo.title ?? name)
 	const desc = $derived(seo.description ?? description)
 	const type = $derived(seo.type ?? 'website')
-
 	const origin = $derived(page.url.origin)
 	const canonical = $derived(origin + page.url.pathname)
 	const og_src = $derived(seo.image ?? image)

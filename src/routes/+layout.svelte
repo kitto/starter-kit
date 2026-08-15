@@ -1,11 +1,11 @@
 <script lang="ts">
 	import '../app.css'
-	import favicon from '$assets/favicon.svg'
-	import og from '$assets/og.png'
-	import Loader from '$components/loader.svelte'
-	import Seo from '$components/seo.svelte'
-	// import Cookies from '$components/cookies.svelte'
-	// import Analytics from '$components/analytics.svelte'
+	import favicon from '#assets/favicon.svg'
+	import og from '#assets/og.png'
+	import Loader from '#components/loader.svelte'
+	import Seo from '#components/seo.svelte'
+	// import Cookies from '#components/cookies.svelte'
+	// import Analytics from '#components/analytics.svelte'
 	// import { Overlay } from 'kitto/svelte'
 
 	let { children } = $props()
