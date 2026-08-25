@@ -33,7 +33,7 @@
 		"vite": "8.2.2"
 	},
 	"imports": {
-		"#assets/*": "./src/library/assets/*",
+		"#assets/*": "./src/assets/*",
 		"#components/*": "./src/components/*",
 		"#library/*": "./src/library/*"
 	}
