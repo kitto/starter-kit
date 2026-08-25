@@ -24,7 +24,7 @@ export default defineConfig({
 		sveltekit({
 			adapter: adapter(),
 			alias: {
-				$assets: './src/library/assets',
+				$assets: './src/assets',
 				$components: './src/components',
 				$library: './src/library'
 			},
