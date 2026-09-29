@@ -23,7 +23,7 @@
 				sending = 'sending'
 
 				return async ({ result }) => {
-					sending = result.status ? 'success' : 'error'
+					sending = result.type === 'success' ? 'success' : 'error'
 				}
 			}}
 		>
