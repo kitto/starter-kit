@@ -7,7 +7,7 @@ import { betterAuth, type BetterAuthOptions } from 'better-auth/minimal'
 import config from './auth.config.js'
 import schema from './better_auth/schema.js'
 import { magicLink } from 'better-auth/plugins'
-import Postboi from 'postboi/zepto'
+import { mail } from 'postboi'
 
 // The component client has methods needed for integrating Convex with Better Auth,
 // as well as helper methods for general use.
@@ -25,13 +25,9 @@ export const options = (ctx: GenericCtx<DataModel>) =>
 			magicLink({
 				allowedAttempts: 3,
 				async sendMagicLink({ email, url }) {
-					const mail = new Postboi({
-						token: process.env.ZEPTO_TOKEN
-					})
-
-					await mail.send({
+					// POSTBOI_TOKEN comes from the Convex deployment's environment
+					await mail({
 						to: email,
-						from: process.env.DEFAULT_EMAIL_FROM,
 						subject: 'Your magic link',
 						body: `<p>Click the link to sign in:</p><p><a href="${url}">${url}</a></p>`
 					})

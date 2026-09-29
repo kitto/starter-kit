@@ -17,9 +17,8 @@ declare global {
 		interface ProcessEnv {
 			SITE_URL: string
 			BETTER_AUTH_SECRET: string
-			ZEPTO_TOKEN: string
-			DEFAULT_EMAIL_FROM: string
-			DEFAULT_EMAIL_TO: string
+			POSTBOI_TOKEN: string
+			POSTBOI_TO: string
 		}
 	}
 

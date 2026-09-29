@@ -31,7 +31,7 @@
 		"eslint-plugin-svelte": "3.17.0",
 		"globals": "17.5.0",
 		"kitto": "1.2.1",
-		"postboi": "0.0.7",
+		"postboi": "0.54.3",
 		"prettier": "3.8.3",
 		"prettier-plugin-svelte": "3.5.1",
 		"storyloco": "1.15.1",
