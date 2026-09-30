@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
+	import Captcha from 'postboi/svelte'
 	import { slide } from 'svelte/transition'
 
 	let sending: 'idle' | 'sending' | 'success' | 'error' = $state('idle')
@@ -23,13 +24,14 @@
 				sending = 'sending'
 
 				return async ({ result }) => {
-					sending = result.status ? 'success' : 'error'
+					sending = result.type === 'success' ? 'success' : 'error'
 				}
 			}}
 		>
 			<input type="text" name="name" placeholder="Name" required />
 			<input type="email" name="email" placeholder="Email" required />
 			<textarea name="message" placeholder="Message" required></textarea>
+			<Captcha />
 			<button type="submit" disabled={sending === 'sending'}>
 				{sending === 'sending' ? 'Sending...' : 'Send'}
 			</button>

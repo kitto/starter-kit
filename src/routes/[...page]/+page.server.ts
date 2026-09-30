@@ -1,25 +1,7 @@
-import { DEFAULT_EMAIL_FROM, DEFAULT_EMAIL_TO, ZEPTO_TOKEN } from '$env/static/private'
-import { fail } from '@sveltejs/kit'
-import Postboi from 'postboi/zepto'
+import { action } from 'postboi/kit'
 
-const mail = new Postboi({
-	token: ZEPTO_TOKEN,
-	default_from: DEFAULT_EMAIL_FROM,
-	default_to: DEFAULT_EMAIL_TO
-})
-
+// postboi owns the FormData parsing, the HTML table, the escaping and the honeypot. The
+// recipient comes from POSTBOI_TO, and mail goes out from the Postboi project's sending address.
 export const actions = {
-	async contact(event) {
-		try {
-			await mail.send({ body: await event.request.formData() })
-			return { success: true }
-		} catch (error) {
-			if (mail.is_error(error)) {
-				console.dir(error.error.details, { depth: null })
-				return fail(400, { message: 'Invalid form data' })
-			}
-
-			return fail(500, { message: 'Internal server error' })
-		}
-	}
+	contact: action({ form: 'Contact' })
 }
