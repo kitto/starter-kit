@@ -52,6 +52,16 @@ bun dev
 bun dev -- --open
 ```
 
+## Contact form
+
+The contact form sends through [Postboi](https://postboi.app). Set it up once per project:
+
+```sh
+bunx postboi init
+```
+
+This writes `POSTBOI_TOKEN` to `.env` and the project's captcha key to `postboi.config.ts`, and adds postboi to `vite.config.ts` and the `prepare` script. Commit those changes. Set `POSTBOI_TOKEN` and `POSTBOI_TO` on your host, and `POSTBOI_TOKEN` on the Convex deployment for the magic link emails. Postboi captcha-checks every form submission, so without the key the form's messages can be rejected.
+
 ## Building
 
 To create a production version of your app:
