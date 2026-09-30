@@ -17,7 +17,7 @@
         "eslint-plugin-svelte": "3.17.0",
         "globals": "17.5.0",
         "kitto": "1.2.1",
-        "postboi": "0.56.0",
+        "postboi": "0.57.0",
         "prettier": "3.8.3",
         "prettier-plugin-svelte": "3.5.1",
         "storyloco": "1.15.1",
@@ -467,7 +467,7 @@
 
     "picomatch": ["picomatch@4.0.4", "", {}, "sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A=="],
 
-    "postboi": ["postboi@0.56.0", "", { "dependencies": { "@fontsource-variable/archivo": "5.3.0", "@fontsource-variable/golos-text": "5.3.0" }, "peerDependencies": { "@maizzle/framework": "^6.0.0", "@sveltejs/kit": "^2.0.0", "expo-constants": ">=15", "expo-notifications": ">=0.20", "react": ">=18", "svelte": "^5.7.0", "vue": ">=3.3" }, "optionalPeers": ["@maizzle/framework", "@sveltejs/kit", "expo-constants", "expo-notifications", "react", "vue"], "bin": { "postboi": "dist/cli.js" } }, "sha512-6RI9ADRduXlMNd+LWdNUyj/TjbRfW1Hgytq1kYBjHiOnslsiotq1+BkkwqovOszbyln4IQfdhDZjpXMK9m2g7w=="],
+    "postboi": ["postboi@0.57.0", "", { "dependencies": { "@fontsource-variable/archivo": "5.3.0", "@fontsource-variable/golos-text": "5.3.0" }, "peerDependencies": { "@maizzle/framework": "^6.0.0", "@sveltejs/kit": "^2.0.0", "expo-constants": ">=15", "expo-notifications": ">=0.20", "react": ">=18", "svelte": "^5.7.0", "vue": ">=3.3" }, "optionalPeers": ["@maizzle/framework", "@sveltejs/kit", "expo-constants", "expo-notifications", "react", "vue"], "bin": { "postboi": "dist/cli.js" } }, "sha512-WVcs4VpziGFNTP1RCYmKPfZg2JOIKPWHsXwS4KUiS49kyz9i+Sw05rEoJaqVJtpHg1aI0OERpAb44h8f2SQ//g=="],
 
     "postcss": ["postcss@8.5.8", "", { "dependencies": { "nanoid": "^3.3.11", "picocolors": "^1.1.1", "source-map-js": "^1.2.1" } }, "sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg=="],
 
