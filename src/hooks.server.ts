@@ -1,13 +1,21 @@
-export function handleError({ error }) {
-	const env = import.meta.env.environment
-	const err = error instanceof Error ? error : new Error('Unknown error')
+import { to_app_error } from '#library/errors.ts'
 
-	return {
-		// Production hides details; development and preview surface the real message for debugging.
-		message: env === 'production' ? 'Whoa there!' : err.message,
-		code: 'code' in err && typeof err.code === 'string' ? err.code : 'UNKNOWN',
-		env
+export function handleError(input) {
+	// Replaces SvelteKit's default server hook, so log what it would: validation issues and unknown errors.
+	if (input.kind === 'validation') console.error('Remote function schema validation failed:', input.issues)
+
+	if (input.kind === 'unknown') {
+		let err = input.error
+
+		while (err instanceof Error) {
+			if (err.stack) console.error(err.stack)
+			err = err.cause
+		}
+
+		if (err) console.error(String(err))
 	}
+
+	return to_app_error(input)
 }
 
 export const handle = async ({ event, resolve }) => {

@@ -7,9 +7,9 @@
 - ESLint
 - MCP (incl. Claude, Cursor, Gemini)
 - Bun
-- Component & Library aliases
+- Component & Library subpath imports
 - Viewport-fit cover
-- Ignore lock files
+- Commit lock files
 
 ### Along with these features:
 

@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation'
-	import { prefs } from '$library/stores'
+	import { prefs } from '#library/stores.ts'
 
 	interface Props {
 		id?: string
 	}
 
 	let { id }: Props = $props()
-
 	let initialised = false
 
 	// gtag.js only processes native `arguments` entries in dataLayer; a spread array is
@@ -48,11 +47,10 @@
 	})
 
 	// Track client-side navigations; skip the initial load (config already counted it).
-	afterNavigate(({ from, to }) => {
+	afterNavigate(({ from, to, shallow }) => {
+		if (shallow) return
 		if (!id || !from || !to) return
-		gtag('event', 'page_view', {
-			page_title: document.title,
-			page_path: to.url.pathname
-		})
+
+		gtag('event', 'page_view', { page_title: document.title, page_path: to.url.pathname })
 	})
 </script>

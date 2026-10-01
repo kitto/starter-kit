@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { prefs } from '$library/stores'
-	import { browser } from '$app/environment'
-	import Button from '$components/button.svelte'
+	import { prefs } from '#library/stores.ts'
+	import { browser } from '$app/env'
+	import Button from '#components/button.svelte'
 	import { slide, fly } from 'svelte/transition'
 
 	let details = $state(false)

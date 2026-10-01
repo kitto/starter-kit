@@ -11,7 +11,9 @@
 		easing: cubicOut // The easing function to use
 	})
 
-	beforeNavigate(({ from, to }) => {
+	beforeNavigate(({ from, to, shallow }) => {
+		if (shallow) return
+
 		if (from?.url.pathname !== to?.url.pathname) {
 			// Cancel a pending hide so a quick second navigation doesn't blank the bar mid-load.
 			clearTimeout(hide_timeout)
@@ -20,7 +22,9 @@
 		}
 	})
 
-	afterNavigate(() => {
+	afterNavigate(({ shallow }) => {
+		if (shallow) return
+
 		progress.set(1, { duration: 500 })
 
 		hide_timeout = setTimeout(() => {

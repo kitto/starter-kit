@@ -44,10 +44,7 @@
 			.replace(/(--[\w-]+)/g, m => `<span class=hl-v>${m}</span>`)
 			.replace(/@(media|import)/g, m => `<span class=hl-k>${m}</span>`)
 			.replace(/\b(media|import|var|if|export|return|const|let|and)\b/g, m => `<span class=hl-k>${m}</span>`)
-			.replace(
-				/\b(fluid|breakpoints|size|composeVisitors|storable|set)\b/g,
-				m => `<span class=hl-f>${m}</span>`
-			)
+			.replace(/\b(fluid|breakpoints|size|kitto(?=\()|storable|set)\b/g, m => `<span class=hl-f>${m}</span>`)
 			.replace(/(\.[a-zA-Z][\w-]*)(?=[\s{,])/g, m => `<span class=hl-sel>${m}</span>`)
 			.replace(/\b(?<![\w-]-)(\d+\.?\d*)(px|rem|em|%)?\b/g, m => `<span class=hl-n>${m}</span>`)
 	}
@@ -56,25 +53,25 @@
 		{
 			title: 'TypeScript, lint, and checks',
 			badge: 'package.json',
-			desc: 'TypeScript across the app, Oxfmt and ESLint (with the Svelte plugin), and `svelte-check-rs` via `bun run check`. Dependencies and scripts assume Bun.',
+			desc: 'TypeScript across the app, Oxfmt and ESLint (with the Svelte plugin), and `svelte-check` via `bun run check`. Dependencies and scripts assume Bun.',
 			example: `"scripts": {
-  "check": "svelte-kit sync && svelte-check-rs --tsconfig ./tsconfig.json",
+  "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
   "lint": "oxfmt --check . && eslint .",
   "format": "oxfmt"
 }`
 		},
 		{
-			title: 'LightningCSS + kitto visitors',
+			title: 'LightningCSS + kitto plugin',
 			badge: 'vite.config.ts',
-			desc: 'CSS is processed with LightningCSS. Breakpoints are defined once in Vite; `fluid()` gives responsive `clamp()` values; `size` is a width+height shorthand. All three come from `kitto/lightningcss`.',
+			desc: 'CSS is processed with LightningCSS. A single `kitto()` plugin wires it up: breakpoints are defined once, `fluid()` gives responsive `clamp()` values, `size` is a width+height shorthand, and `targets` sets the browser floor.',
 			examples: [
 				{
 					label: 'vite.config.ts',
-					code: `visitor: composeVisitors([
-  breakpoints({ mobile: 640, tablet: 1024, laptop: 1280, desktop: 1440 }),
-  fluid({ vmax: 1600 }),
-  size
-])`
+					code: `kitto({
+  breakpoints: { mobile: 640, tablet: 1024, laptop: 1280, desktop: 1440 },
+  fluid: { vmax: 1600 },
+  targets: 'baseline'
+})`
 				},
 				{
 					label: 'breakpoints()',
@@ -129,6 +126,12 @@
 }`
 		},
 		{
+			title: 'OS text scaling',
+			badge: 'app.html',
+			desc: 'The `text-scale` meta opts the page into OS and browser text size preferences, so the root font size follows the setting instead of ignoring it—around a third of mobile users have changed it. Only relative units respond, which is everything here since type comes from `rem`-based `fluid()` tokens. Support is still landing across browsers and it is ignored where unsupported.',
+			example: `&lt;meta name="text-scale" content="scale" /&gt;`
+		},
+		{
 			title: 'Security headers',
 			badge: 'hooks.server.ts',
 			desc: 'Every response gets cache control, CSP (`frame-ancestors`), permissions policy, referrer policy, and X-Content-Type-Options—reasonable defaults you can tighten per app.',
@@ -138,15 +141,17 @@ response.headers.set('X-Content-Type-Options', 'nosniff')`
 		},
 		{
 			title: 'handleError',
-			badge: 'hooks.server.ts',
-			desc: 'Errors are shaped centrally: production shows a short generic message (no stack traces); dev and preview surface the real `error.message`. The env comes from `import.meta.env.environment`—detected at build time from the deploying host (Vercel, Netlify, Cloudflare Pages & Workers) and baked in, so it works server- and client-side with no env var or `.env`.',
-			example: `// 'development' | 'preview' | 'production'
-message: import.meta.env.environment === 'production' ? 'Whoa there!' : err.message`
+			badge: 'hooks.server.ts · hooks.client.ts',
+			desc: 'Both hooks share `to_app_error` from `#library/errors.ts`. App errors from `error(...)`, framework 404s and validation errors already carry a safe status and message, so they pass through; only unknown errors are masked—production shows a short generic message (no stack traces); dev and preview surface the real `error.message`. The env comes from `import.meta.env.environment`—detected at build time from the deploying host (Vercel, Netlify, Cloudflare Pages & Workers) and baked in, so it works server- and client-side with no env var or `.env`.',
+			example: `if (kind !== 'unknown') return { code: kind.toUpperCase(), ...error, env }
+
+// 'development' | 'preview' | 'production'
+message: env === 'production' ? 'Whoa there!' : err.message`
 		},
 		{
 			title: 'HTTPS in dev (optional)',
 			badge: 'vite.config.ts',
-			desc: 'If `localhost.pem` and `localhost-key.pem` exist (e.g. from mkcert), the dev server serves HTTPS—useful for OAuth redirects, `Secure` cookies, or APIs that need a secure context. Otherwise Vite logs a warning and runs over HTTP.',
+			desc: 'The `kitto()` plugin looks for any `<name>.pem` + `<name>-key.pem` pair in the project root (e.g. from mkcert) and serves the dev server over HTTPS—useful for OAuth redirects, `Secure` cookies, or APIs that need a secure context. With no certs it logs a warning and runs over HTTP.',
 			example: `# After mkcert localhost (+ key files next to vite.config.ts)
 bun dev   # https://localhost:5173 when certs are present`
 		},
@@ -161,20 +166,20 @@ import.meta.env.environment // development`
 		},
 		{
 			title: 'Path aliases',
-			badge: 'vite.config.ts',
-			desc: '`$components` and `$library` map to `src/components` and `src/library` so imports stay short and consistent.',
-			example: `import Loader from '$components/loader.svelte'
-import { prefs } from '$library/stores'`
+			badge: 'package.json',
+			desc: 'Node subpath imports—`#components`, `#library` and `#assets` map to `src/components`, `src/library` and `src/assets` so imports stay short and consistent. Resolution is literal, so always write the extension; any file type works.',
+			example: `import Loader from '#components/loader.svelte'
+import { prefs } from '#library/stores.ts'`
 		},
 		{
 			title: 'Route loader',
-			badge: 'Loader.svelte',
+			badge: 'loader.svelte',
 			desc: 'A slim progress bar runs along the top during client-side navigations. It is already mounted in `+layout.svelte`; adjust or remove there.',
 			example: `// Wired in +layout.svelte — no extra setup on routes`
 		},
 		{
 			title: 'Cookie banner (optional)',
-			badge: 'Cookies.svelte',
+			badge: 'cookies.svelte',
 			desc: 'A consent UI backed by the `prefs` store—tri-state `cookies`: `undefined` undecided, `true` accepted, `false` rejected. It self-guards for SSR, so just render it; any feature can react to the choice. Commented out in `+layout.svelte`—enable for GDPR-style consent.',
 			example: `&lt;Cookies /&gt;
 
@@ -185,9 +190,9 @@ import { prefs } from '$library/stores'`
 		},
 		{
 			title: 'Google Analytics helper',
-			badge: 'Analytics.svelte',
+			badge: 'analytics.svelte',
 			desc: 'Google Consent Mode v2—gtag loads for everyone but defaults to denied until the user accepts (then granted via `prefs.cookies`), so non-consenting visits get anonymous cookieless pings. Sends a page view on each `afterNavigate` for SPA route changes.',
-			example: `import Analytics from '$components/analytics.svelte'
+			example: `import Analytics from '#components/analytics.svelte'
 
 &lt;Analytics id="G-XXXXXXXXXX" /&gt;`
 		},
