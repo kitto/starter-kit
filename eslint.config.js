@@ -27,7 +27,7 @@ export default defineConfig(
 		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
 		languageOptions: {
 			parserOptions: {
-				// projectService: true, // TODO: Uncomment when eslint supports TS7
+				projectService: true,
 				extraFileExtensions: ['.svelte'],
 				parser: ts.parser
 			}
